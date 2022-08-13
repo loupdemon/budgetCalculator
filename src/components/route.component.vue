@@ -22,7 +22,7 @@ const routes = {
 
 export default {
   data() {
-    return { 
+    return {
       currentPath: window.location.hash,
     };
   },

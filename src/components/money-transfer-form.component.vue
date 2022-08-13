@@ -115,7 +115,7 @@ export default {
       value: null,
       tag: '',
       tags: [],
-      currency: CurrencyValues.USD,
+      currency: CurrencyValues.EUR,
       repeatPeriod: RepeatingPeriod.Once,
       comment: '',
       date: this.getStartedOn(),

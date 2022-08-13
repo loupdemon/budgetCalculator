@@ -1,21 +1,12 @@
 <template>
   <div class="max-w-md py-4 px-8 shadow-xl rounded-lg my-6 ml-2 border" :class="monthStyle">
-    <!--    <div class="flex justify-center md:justify-end -mt-16">-->
-    <!--      <img-->
-    <!--        class="w-20 h-20 object-cover rounded-full border-2 border-indigo-500"-->
-    <!--        src="https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"-->
-    <!--      />-->
-    <!--    </div>-->
     <div>
       <h2 class="text-gray-800 text-3xl font-semibold">
-        Month: <b>{{ month.name }}</b>
+        <b>{{ month.name }}</b>
       </h2>
-      <h3 class="text-gray-800 text-2xl font-semibold">
-        Working days: <b>{{ days }}</b>
-      </h3>
       <div class="mt-2 text-black-700">
         <TransactionSummaries
-          :expenditures="[...expenditures, ...deletedExpenditures]"
+          :expenses="[...expenses, ...deletedExpenses]"
           :incomes="[...incomes, ...deletedIncomes]"
         />
       </div>
@@ -24,7 +15,7 @@
       <div class="flex justify-end mt-4">
         <button
           @click="showDialog"
-          class="text-xl font-medium px-6 py-2 text-white bg-blue-600 rounded shadow"
+          class="text-xl font-medium px-6 py-2 text-white bg-blue-500 rounded shadow"
           type="button"
         >
           Show details
@@ -34,24 +25,24 @@
     <div>
       <MonthDetailsModal
         ref="detailsModal"
-        :expenditures="expenditures"
+        :expenses="expenses"
         :incomes="incomes"
-        :temp-expenditures="tempExpenditures"
+        :temp-expenses="tempExpenses"
         :temp-incomes="tempIncomes"
         :is-frozen="isPassedMonth"
         @successful="proceedSuccessfulTransaction"
       >
-        <template #header> {{ month.name }}-{{ year }}</template>
+        <template #header> {{ month.name }} {{ year }}</template>
         <template #body>
           <ModalBody
-            :expenditures="expenditures"
+            :expenses="expenses"
             :incomes="incomes"
-            :temp-expenditures="tempExpenditures"
+            :temp-expenses="tempExpenses"
             :temp-incomes="tempIncomes"
             :is-frozen="isPassedMonth"
             :month="month"
             @addIncome="tempIncome => tempIncomes.push(tempIncome)"
-            @addExpenditure="tempExpenditure => tempExpenditures.push(tempExpenditure)"
+            @addExpense="tempExpense => tempExpenses.push(tempExpense)"
           >
             <template #incomes>
               <MonthDetailsTransactionsList
@@ -64,15 +55,15 @@
                 @revertTransactionDelete="revertIncomeDelete"
               />
             </template>
-            <template #expenditures>
+            <template #expenses>
               <MonthDetailsTransactionsList
-                title="expenditures"
-                :saved-transactions="expenditures"
-                :temp-transactions="tempExpenditures"
-                :deleted-transactions="deletedExpenditures"
-                @deleteTransaction="deleteExpenditure"
-                @deleteTempTransaction="deleteTempExpenditure"
-                @revertTransactionDelete="revertExpenditureDelete"
+                title="expenses"
+                :saved-transactions="expenses"
+                :temp-transactions="tempExpenses"
+                :deleted-transactions="deletedExpenses"
+                @deleteTransaction="deleteExpense"
+                @deleteTempTransaction="deleteTempExpense"
+                @revertTransactionDelete="revertExpenseDelete"
               />
             </template>
           </ModalBody>
@@ -83,15 +74,12 @@
 </template>
 
 <script>
-import { DaysService } from '../services/days.service';
-
 import MonthDetailsModal from './month-details/month-details-modal.component';
 import MonthDetailsTransactionsList from './month-details/month-details-transaction-lists.component';
 import ModalBody from './month-details/month-details-body.component';
 import TransactionSummaries from './transactions-summaries.component';
 import { MonthType } from '@/enums';
 
-const daysService = new DaysService();
 export default {
   name: 'month-card.component',
   components: {
@@ -117,22 +105,21 @@ export default {
   data() {
     return {
       tempIncomes: [],
-      tempExpenditures: [],
-      incomes: [{ id: Date.now() + 1, value: 4000, currency: 'USD', repeatPeriod: 1, comment: 'Salary' }],
-      expenditures: [{ id: Date.now() + 3, value: 2050, currency: 'USD', repeatPeriod: 0, comment: 'For house' }],
+      tempExpenses: [],
+      incomes: [],
+      expenses: [],
       deletedIncomes: [],
-      deletedExpenditures: [],
-      days: daysService.getNumberOfDays(this.year, this.month.name),
+      deletedExpenses: []
     };
   },
   computed: {
     monthStyle() {
       if (this.monthType === MonthType.Passed) {
-        return 'bg-gray-300';
+        return 'bg-zinc-300';
       }
 
       if (this.monthType === MonthType.Current) {
-        return 'bg-yellow-200';
+        return 'bg-blue-100';
       }
 
       return '';
@@ -146,15 +133,15 @@ export default {
     deleteTempIncome(id) {
       this.tempIncomes = this.tempIncomes.filter(el => el.id !== id);
     },
-    deleteTempExpenditure(id) {
-      this.tempExpenditures = this.tempExpenditures.filter(el => el.id !== id);
+    deleteTempExpense(id) {
+      this.tempExpenses = this.tempExpenses.filter(el => el.id !== id);
     },
-    deleteExpenditure(id) {
-      const expenditure = this.expenditures.find(el => el.id === id);
-      if (expenditure) {
-        this.deletedExpenditures.push(expenditure);
+    deleteExpense(id) {
+      const expense = this.expenses.find(el => el.id === id);
+      if (expense) {
+        this.deletedExpenses.push(expense);
       }
-      this.expenditures = this.expenditures.filter(el => el.id !== id);
+      this.expenses = this.expenses.filter(el => el.id !== id);
     },
     deleteIncome(id) {
       const income = this.incomes.find(el => el.id === id);
@@ -172,12 +159,12 @@ export default {
       this.deletedIncomes = this.deletedIncomes.filter(el => el.id !== id);
     },
 
-    revertExpenditureDelete(id) {
-      const expenditure = this.deletedExpenditures.find(el => el.id === id);
-      if (expenditure) {
-        this.expenditures.push(expenditure);
+    revertExpenseDelete(id) {
+      const expense = this.deletedExpenses.find(el => el.id === id);
+      if (expense) {
+        this.expenses.push(expense);
       }
-      this.deletedExpenditures = this.deletedExpenditures.filter(el => el.id !== id);
+      this.deletedExpenses = this.deletedExpenses.filter(el => el.id !== id);
     },
 
     async showDialog() {
@@ -189,21 +176,21 @@ export default {
       }
 
       this.incomes.push(...this.deletedIncomes);
-      this.expenditures.push(...this.deletedExpenditures);
+      this.expenses.push(...this.deletedExpenses);
       this.flushTempStorages();
     },
 
     proceedSuccessfulTransaction() {
       this.incomes = [...this.tempIncomes, ...this.incomes];
-      this.expenditures = [...this.tempExpenditures, ...this.expenditures];
+      this.expenses = [...this.tempExpenses, ...this.expenses];
       this.flushTempStorages();
     },
 
     flushTempStorages() {
       this.tempIncomes = [];
-      this.tempExpenditures = [];
+      this.tempExpenses = [];
       this.deletedIncomes = [];
-      this.deletedExpenditures = [];
+      this.deletedExpenses = [];
     },
   },
 };

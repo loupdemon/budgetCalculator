@@ -75,7 +75,7 @@ export default {
   },
   emits: {
     addIncome: isValidTransactionObject,
-    addExpenditure: isValidTransactionObject,
+    addExpense: isValidTransactionObject,
     // successful: null,
   },
   modalStateController: null,
@@ -88,11 +88,11 @@ export default {
       type: Array,
       required: true,
     },
-    tempExpenditures: {
+    tempExpenses: {
       type: Array,
       required: true,
     },
-    expenditures: {
+    expenses: {
       type: Array,
       required: true,
     },
@@ -115,7 +115,7 @@ export default {
   methods: {
     updateTransactions() {
       this.isLoading = true;
-      TransactionService.update(this.incomes, this.tempIncomes, this.expenditures, this.tempExpenditures)
+      TransactionService.update(this.incomes, this.tempIncomes, this.expenses, this.tempExpenses)
         .then(() => {
           this.isTransactionSuccessful = true;
         })
@@ -156,7 +156,7 @@ export default {
     },
 
     isDangerousClose() {
-      return this.isCloseRequested && (this.tempExpenditures.length > 0 || this.tempIncomes.length > 0);
+      return this.isCloseRequested && (this.tempExpenses.length > 0 || this.tempIncomes.length > 0);
     },
 
     handleKeydown(e) {

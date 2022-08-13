@@ -5,15 +5,15 @@
       &nbsp;
       <p class="text-lg font-black">{{ totalIncomes }}</p>
       &nbsp;
-      <p class="text-lg">USD</p>
+      <p class="text-lg">EUR</p>
     </div>
 
     <div class="flex mb-1 p-1">
-      <p class="text-lg">Expenditures:</p>
+      <p class="text-lg">Expenses:</p>
       &nbsp;
-      <p class="font-black text-lg">{{ totalExpenditures }}</p>
+      <p class="font-black text-lg">{{ totalExpenses }}</p>
       &nbsp;
-      <p class="font-medium text-lg">USD</p>
+      <p class="font-medium text-lg">EUR</p>
     </div>
 
     <div class="p-2" :class="getStyles">
@@ -22,7 +22,7 @@
         &nbsp;
         <p class="text-xl font-black">{{ getSign }}{{ calculateTotal }}</p>
         &nbsp;
-        <p class="font-medium text-xl">USD</p>
+        <p class="font-medium text-xl">EUR</p>
       </div>
       <p class="text-xl">{{ getMessage }}</p>
     </div>
@@ -39,7 +39,7 @@ export default {
       type: Array,
       required: true,
     },
-    expenditures: {
+    expenses: {
       type: Array,
       required: true,
     },
@@ -50,7 +50,7 @@ export default {
       let summary = 0;
       arr.forEach(el => {
         if (el.currency === CurrencyValues.UAH) {
-          summary += el.value / this.usdRate;
+          summary += el.value / this.eurRate;
           return;
         }
         summary += el.value;
@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     calculateTotal() {
-      return (this.totalIncomes - this.totalExpenditures).toFixed(3);
+      return (this.totalIncomes - this.totalExpenses).toFixed(3);
     },
     getStyles() {
       if (this.calculateTotal > 0) {
@@ -105,9 +105,9 @@ export default {
 
   data() {
     return {
-      usdRate: null,
+      eurRate: null,
       totalIncomes: this.calculateSummary(this.incomes),
-      totalExpenditures: this.calculateSummary(this.expenditures),
+      totalExpenses: this.calculateSummary(this.expenses),
     };
   },
 
@@ -115,12 +115,12 @@ export default {
     incomes() {
       this.totalIncomes = this.calculateSummary(this.incomes);
     },
-    expenditures() {
-      this.totalExpenditures = this.calculateSummary(this.expenditures);
+    expenses() {
+      this.totalExpenses = this.calculateSummary(this.expenses);
     },
-    usdRate() {
+    eurRate() {
       this.totalIncomes = this.calculateSummary(this.incomes);
-      this.totalExpenditures = this.calculateSummary(this.expenditures);
+      this.totalExpenses = this.calculateSummary(this.expenses);
     },
   },
 };

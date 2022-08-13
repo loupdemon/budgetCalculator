@@ -1,10 +1,10 @@
 export class TransactionService {
-  static update(incomes, tempIncomes, expenditures, tempExpenditures) {
-    console.log(incomes.length + tempIncomes.length + expenditures.length + tempExpenditures.length);
+  static update(incomes, tempIncomes, expenses, tempExpenses) {
+    console.log(incomes.length + tempIncomes.length + expenses.length + tempExpenses.length);
     // console.dir(incomes);
     // console.dir(tempIncomes);
-    // console.dir(expenditures);
-    // console.dir(tempExpenditures);
+    // console.dir(expenses);
+    // console.dir(tempExpenses);
     return new Promise(resolve => setTimeout(resolve, 1000));
   }
 }

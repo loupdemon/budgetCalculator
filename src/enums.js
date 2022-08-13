@@ -1,6 +1,5 @@
 export const CurrencyValues = {
-  USD: 'USD',
-  UAH: 'UAH',
+  EUR: 'EUR',
 };
 
 export const RepeatingPeriod = {
