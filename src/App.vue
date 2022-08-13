@@ -1,26 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="" style="text-align: center">
+    <h1 class="text-3xl font-bold underline">Welcome to Budget Calculator!</h1>
+    <h2 class="text-2xl">Now is year {{ year }}. Let's plan your budget</h2>
+  </div>
+  <RouteComponent />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import RouteComponent from '@/components/route.component'
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    RouteComponent
+  },
+  data() {
+    return {
+      year: new Date().getFullYear(),
+    };
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
