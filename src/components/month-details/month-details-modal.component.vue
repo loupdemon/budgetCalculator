@@ -76,7 +76,6 @@ export default {
   emits: {
     addIncome: isValidTransactionObject,
     addExpense: isValidTransactionObject,
-    // successful: null,
   },
   modalStateController: null,
   props: {
@@ -132,8 +131,6 @@ export default {
 
       if (this.isTransactionSuccessful) {
         this.closeAll();
-        // this.isOpen = true;
-        // this.$emit('successful');
         this.$options.modalStateController.resolve(true);
         return;
       }

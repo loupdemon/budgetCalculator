@@ -7,41 +7,41 @@
       <div class="px-4 py-5 bg-white sm:p-6">
         <div class="grid grid-cols-6 gap-6">
           <div class="col-span-6 sm:col-span-3">
-            <label for="money-value" class="block text-sm font-medium text-gray-700">Value</label>
+            <label
+              for="money-value"
+              class="block text-sm font-medium text-gray-700"
+              >Value</label
+            >
             <input
               type="number"
               v-model="value"
               name="money-value"
               id="money-value"
               autocomplete=""
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full border-solid border-2 border-gray-200 shadow-sm sm:text-sm border-gray-300 rounded-md"
             />
           </div>
 
           <div class="col-span-6 sm:col-span-3">
-            <label for="currency" class="block text-sm font-medium text-gray-700">Currency</label>
-            <select
-              v-model="currency"
-              id="currency"
-              name="currency"
-              autocomplete="currency"
-              class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            <label
+              for="currency"
+              class="block text-sm font-medium text-gray-700"
+              >Currency</label
             >
-              <option v-for="currencyValue in currencyValues" :key="currencyValue" :value="currencyValue">
-                {{ currencyValue }}
-              </option>
-            </select>
+            {{currency}}
           </div>
 
           <div class="col-span-6 sm:col-span-6 lg:col-span-4">
-            <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
+            <label for="comment" class="block text-sm font-medium text-gray-700"
+              >Comment</label
+            >
             <input
               type="text"
               v-model="comment"
               name="comment"
               id="comment"
               autocomplete=""
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full border-solid border-2 border-gray-200 shadow-sm sm:text-sm border-gray-300 rounded-md"
             />
           </div>
         </div>
@@ -55,9 +55,17 @@
       </div>
 
       <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <button @click="cancel" class="px-6 py-2 text-blue-800 border border-blue-600 rounded">Cancel</button>
+        <button
+          @click="cancel"
+          class="px-6 py-2 text-blue-800 border border-blue-600 rounded"
+        >
+          Cancel
+        </button>
 
-        <button class="px-6 py-2 ml-2 text-blue-100 rounded bg-blue-600" @click="addTransaction">
+        <button
+          class="px-6 py-2 ml-2 text-blue-100 rounded bg-blue-600"
+          @click="addTransaction"
+        >
           Add transaction
         </button>
       </div>
@@ -66,12 +74,11 @@
 </template>
 
 <script>
-import { inputExists, isValidTransactionObject } from '@/utils';
-import { CurrencyValues} from '@/enums';
-
+import { inputExists, isValidTransactionObject } from "@/utils";
+import { CurrencyValues } from "@/enums";
 
 export default {
-  name: 'money-transfer-form.component',
+  name: "money-transfer-form.component",
   emits: {
     add: isValidTransactionObject,
     cancel: null,
@@ -82,7 +89,7 @@ export default {
       errors: [],
       value: null,
       currency: CurrencyValues.EUR,
-      comment: '',
+      comment: "",
       date: this.getStartedOn(),
     };
   },
@@ -94,12 +101,6 @@ export default {
     },
   },
 
-  computed: {
-    currencyValues() {
-      return Object.keys(CurrencyValues);
-    },
-  },
-
   methods: {
     addTransaction(e) {
       e.preventDefault();
@@ -108,21 +109,29 @@ export default {
       if (this.errors.length === 0) {
         const { value, currency, comment, repeatPeriod, tag, date } = this;
         const id = Date.now();
-        this.$emit('add', { id, value, currency, comment, repeatPeriod, tag, date });
+        this.$emit("add", {
+          id,
+          value,
+          currency,
+          comment,
+          repeatPeriod,
+          tag,
+          date,
+        });
       }
     },
 
     cancel() {
-      this.$emit('cancel');
+      this.$emit("cancel");
     },
     checkForm() {
       this.errors = [];
       if (!inputExists(this.value)) {
-        this.errors.push('Value can not be empty');
+        this.errors.push("Value can not be empty");
       }
 
       if (!inputExists(this.currency)) {
-        this.errors.push('Currency can not be empty');
+        this.errors.push("Currency can not be empty");
       }
     },
 

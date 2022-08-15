@@ -1,5 +1,8 @@
 <template>
-  <div class="max-w-md py-4 px-8 shadow-xl rounded-lg my-6 ml-2 border" :class="monthStyle">
+  <div
+    class="max-w-md py-4 px-8 shadow-xl rounded-lg my-6 ml-2 border"
+    :class="monthStyle"
+  >
     <div>
       <h2 class="text-gray-800 text-3xl font-semibold">
         <b>{{ month.name }}</b>
@@ -41,8 +44,8 @@
             :temp-incomes="tempIncomes"
             :is-frozen="isPassedMonth"
             :month="month"
-            @addIncome="tempIncome => tempIncomes.push(tempIncome)"
-            @addExpense="tempExpense => tempExpenses.push(tempExpense)"
+            @addIncome="(tempIncome) => tempIncomes.push(tempIncome)"
+            @addExpense="(tempExpense) => tempExpenses.push(tempExpense)"
           >
             <template #incomes>
               <MonthDetailsTransactionsList
@@ -50,6 +53,7 @@
                 :saved-transactions="incomes"
                 :temp-transactions="tempIncomes"
                 :deleted-transactions="deletedIncomes"
+                :is-frozen="isPassedMonth"
                 @deleteTransaction="deleteIncome"
                 @deleteTempTransaction="deleteTempIncome"
                 @revertTransactionDelete="revertIncomeDelete"
@@ -61,6 +65,7 @@
                 :saved-transactions="expenses"
                 :temp-transactions="tempExpenses"
                 :deleted-transactions="deletedExpenses"
+                :is-frozen="isPassedMonth"
                 @deleteTransaction="deleteExpense"
                 @deleteTempTransaction="deleteTempExpense"
                 @revertTransactionDelete="revertExpenseDelete"
@@ -74,14 +79,14 @@
 </template>
 
 <script>
-import MonthDetailsModal from './month-details/month-details-modal.component';
-import MonthDetailsTransactionsList from './month-details/month-details-transaction-lists.component';
-import ModalBody from './month-details/month-details-body.component';
-import TransactionSummaries from './transactions-summaries.component';
-import { MonthType } from '@/enums';
+import MonthDetailsModal from "./month-details/month-details-modal.component";
+import MonthDetailsTransactionsList from "./month-details/month-details-transaction-lists.component";
+import ModalBody from "./month-details/month-details-body.component";
+import TransactionSummaries from "./transactions-summaries.component";
+import { MonthType } from "@/enums";
 
 export default {
-  name: 'month-card.component',
+  name: "month-card.component",
   components: {
     MonthDetailsModal,
     MonthDetailsTransactionsList,
@@ -113,20 +118,20 @@ export default {
       incomes: [],
       expenses: [],
       deletedIncomes: [],
-      deletedExpenses: []
+      deletedExpenses: [],
     };
   },
   computed: {
     monthStyle() {
       if (this.monthType === MonthType.Passed) {
-        return 'bg-zinc-300';
+        return "bg-zinc-300";
       }
 
       if (this.monthType === MonthType.Current) {
-        return 'bg-blue-100';
+        return "bg-blue-100";
       }
 
-      return '';
+      return "";
     },
 
     isPassedMonth() {
@@ -135,40 +140,40 @@ export default {
   },
   methods: {
     deleteTempIncome(id) {
-      this.tempIncomes = this.tempIncomes.filter(el => el.id !== id);
+      this.tempIncomes = this.tempIncomes.filter((el) => el.id !== id);
     },
     deleteTempExpense(id) {
-      this.tempExpenses = this.tempExpenses.filter(el => el.id !== id);
+      this.tempExpenses = this.tempExpenses.filter((el) => el.id !== id);
     },
     deleteExpense(id) {
-      const expense = this.expenses.find(el => el.id === id);
+      const expense = this.expenses.find((el) => el.id === id);
       if (expense) {
         this.deletedExpenses.push(expense);
       }
-      this.expenses = this.expenses.filter(el => el.id !== id);
+      this.expenses = this.expenses.filter((el) => el.id !== id);
     },
     deleteIncome(id) {
-      const income = this.incomes.find(el => el.id === id);
+      const income = this.incomes.find((el) => el.id === id);
       if (income) {
         this.deletedIncomes.push(income);
       }
-      this.incomes = this.incomes.filter(el => el.id !== id);
+      this.incomes = this.incomes.filter((el) => el.id !== id);
     },
 
     revertIncomeDelete(id) {
-      const income = this.deletedIncomes.find(el => el.id === id);
+      const income = this.deletedIncomes.find((el) => el.id === id);
       if (income) {
         this.incomes.push(income);
       }
-      this.deletedIncomes = this.deletedIncomes.filter(el => el.id !== id);
+      this.deletedIncomes = this.deletedIncomes.filter((el) => el.id !== id);
     },
 
     revertExpenseDelete(id) {
-      const expense = this.deletedExpenses.find(el => el.id === id);
+      const expense = this.deletedExpenses.find((el) => el.id === id);
       if (expense) {
         this.expenses.push(expense);
       }
-      this.deletedExpenses = this.deletedExpenses.filter(el => el.id !== id);
+      this.deletedExpenses = this.deletedExpenses.filter((el) => el.id !== id);
     },
 
     async showDialog() {
@@ -198,18 +203,17 @@ export default {
     },
 
     getMonthIncomes() {
-     return this.monthsData.get(this.month.name).incomes;
-      
+      return this.monthsData.get(this.month.name).incomes;
     },
     getMonthExpenses() {
-           return this.monthsData.get(this.month.name).expenses;
-    }
+      return this.monthsData.get(this.month.name).expenses;
+    },
   },
 
-  mounted(){
+  mounted() {
     this.incomes.push(...this.getMonthIncomes());
     this.expenses.push(...this.getMonthExpenses());
-  }
+  },
 };
 </script>
 

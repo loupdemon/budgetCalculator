@@ -1,13 +1,14 @@
 <template>
-  <TransactionsList :transactions="savedTransactions" @deleteTransaction="deleteTransaction"
+  <TransactionsList :transactions="savedTransactions" :is-frozen="isFrozen" @deleteTransaction="deleteTransaction"
     >Saved {{ title }}
   </TransactionsList>
-  <TransactionsList :transactions="tempTransactions" @deleteTransaction="deleteTempTransaction"
+  <TransactionsList :transactions="tempTransactions" :is-frozen="isFrozen" @deleteTransaction="deleteTempTransaction"
     >Unsaved {{ title }}
   </TransactionsList>
   <TransactionsList
     v-if="deletedTransactions.length > 0"
     :transactions="deletedTransactions"
+    :is-frozen="isFrozen"
     @deleteTransaction="revertTransactionDelete"
     >Deleted {{ title }}
   </TransactionsList>
@@ -15,6 +16,7 @@
 
 <script>
 import TransactionsList from '@/components/transactions-list.component';
+// import { MonthType } from "@/enums";
 export default {
   name: 'month-details-transaction-lists.component',
   components: {
@@ -36,6 +38,10 @@ export default {
     deletedTransactions: {
       type: Array,
       required: true,
+    },
+    isFrozen: {
+      type: Boolean,
+      default: false,
     },
   },
 

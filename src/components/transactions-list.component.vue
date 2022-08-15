@@ -4,12 +4,20 @@
       <h4 class="text-lg leading-6 text-black-900">
         <slot>Unknown transactions</slot>
       </h4>
-      <div v-for="transaction of transactions" :key="transaction.id" class="m-1">
+      <div
+        v-for="transaction of transactions"
+        :key="transaction.id"
+        class="m-1"
+      >
         <div class="grid grid-cols-8 gap-2">
-          <div class="grid grid-cols-1 gap-2 col-start-1 col-end-8 border border-blue-300 rounded-2xl p-1.5">
+          <div
+            class="grid grid-cols-1 gap-2 col-start-1 col-end-8 border border-blue-300 rounded-2xl p-1.5"
+          >
             <div class="flex">
               <p class="font-medium">Value:&nbsp;</p>
-              <p class="text-indigo-500">{{ transaction.value }} {{ transaction.currency }}</p>
+              <p class="text-indigo-500">
+                {{ transaction.value }} {{ transaction.currency }}
+              </p>
             </div>
 
             <div class="flex">
@@ -22,7 +30,7 @@
             </div>
           </div>
 
-          <div class="h-12">
+          <div v-if="!isFrozen" class="h-12">
             <CustomClose @click="() => emitDelete(transaction.id)" />
           </div>
         </div>
@@ -32,12 +40,12 @@
 </template>
 
 <script>
-import { RepeatingPeriodForUser } from '@/enums';
-import { inputExists } from '@/utils';
-import CustomClose from '@/components/custom-close.component';
+import { RepeatingPeriodForUser } from "@/enums";
+import { inputExists } from "@/utils";
+import CustomClose from "@/components/custom-close.component";
 
 export default {
-  name: 'transactions-list.component',
+  name: "transactions-list.component",
   data() {
     return {
       availableRepeatPeriods: RepeatingPeriodForUser,
@@ -47,12 +55,16 @@ export default {
     CustomClose,
   },
   emits: {
-    deleteTransaction: el => typeof el === 'number',
+    deleteTransaction: (el) => typeof el === "number",
   },
   props: {
     transactions: {
       type: Array,
       required: true,
+    },
+    isFrozen: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
@@ -60,7 +72,7 @@ export default {
       return inputExists(value);
     },
     emitDelete(id) {
-      this.$emit('deleteTransaction', id);
+      this.$emit("deleteTransaction", id);
     },
   },
 };
