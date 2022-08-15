@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { CurrencyValues } from '@/enums';
 
 export default {
   name: 'total-section.component',
@@ -49,18 +48,14 @@ export default {
     calculateSummary(arr) {
       let summary = 0;
       arr.forEach(el => {
-        if (el.currency === CurrencyValues.UAH) {
-          summary += el.value / this.eurRate;
-          return;
-        }
         summary += el.value;
       });
-      return summary.toFixed(3);
+      return summary.toFixed(2);
     },
   },
   computed: {
     calculateTotal() {
-      return (this.totalIncomes - this.totalExpenses).toFixed(3);
+      return (this.totalIncomes - this.totalExpenses).toFixed(2);
     },
     getStyles() {
       if (this.calculateTotal > 0) {

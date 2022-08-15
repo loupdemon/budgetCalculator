@@ -101,6 +101,10 @@ export default {
       type: String,
       default: MonthType.Future,
     },
+    monthsData: {
+      type: Object,
+      default: MonthType.Future,
+    },
   },
   data() {
     return {
@@ -192,7 +196,20 @@ export default {
       this.deletedIncomes = [];
       this.deletedExpenses = [];
     },
+
+    getMonthIncomes() {
+     return this.monthsData.get(this.month.name).incomes;
+      
+    },
+    getMonthExpenses() {
+           return this.monthsData.get(this.month.name).expenses;
+    }
   },
+
+  mounted(){
+    this.incomes.push(...this.getMonthIncomes());
+    this.expenses.push(...this.getMonthExpenses());
+  }
 };
 </script>
 

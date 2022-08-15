@@ -33,36 +33,6 @@
             </select>
           </div>
 
-          <div v-if="tags.length > 0" class="col-span-6 sm:col-span-3">
-            <label for="tag" class="block text-sm font-medium text-gray-700">Tag</label>
-            <select
-              v-model="tag"
-              id="tag"
-              name="tag"
-              autocomplete="tag"
-              class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              <option v-for="tagValue in tags" :key="tagValue" :value="tagValue">
-                {{ tagValue }}
-              </option>
-            </select>
-          </div>
-
-          <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-            <label for="repeat" class="block text-sm font-medium text-gray-700">Repeat</label>
-            <select
-              id="repeat"
-              v-model="repeatPeriod"
-              name="repeat"
-              autocomplete=""
-              class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              <option v-for="periodValue in repeatingPeriods" :key="periodValue" :value="periodValue">
-                {{ getRepeatingPeriodForUser(periodValue) }}
-              </option>
-            </select>
-          </div>
-
           <div class="col-span-6 sm:col-span-6 lg:col-span-4">
             <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
             <input
@@ -97,10 +67,8 @@
 
 <script>
 import { inputExists, isValidTransactionObject } from '@/utils';
-import { CurrencyValues, RepeatingPeriod, RepeatingPeriodForUser } from '@/enums';
-import { TagsService } from '@/services/tags.service';
+import { CurrencyValues} from '@/enums';
 
-const tagsService = new TagsService();
 
 export default {
   name: 'money-transfer-form.component',
@@ -113,10 +81,7 @@ export default {
     return {
       errors: [],
       value: null,
-      tag: '',
-      tags: [],
       currency: CurrencyValues.EUR,
-      repeatPeriod: RepeatingPeriod.Once,
       comment: '',
       date: this.getStartedOn(),
     };
@@ -132,10 +97,6 @@ export default {
   computed: {
     currencyValues() {
       return Object.keys(CurrencyValues);
-    },
-
-    repeatingPeriods() {
-      return Object.values(RepeatingPeriod);
     },
   },
 
@@ -163,23 +124,11 @@ export default {
       if (!inputExists(this.currency)) {
         this.errors.push('Currency can not be empty');
       }
-
-      if (!inputExists(this.repeatPeriod)) {
-        this.errors.push('Repeat period can not be empty');
-      }
-    },
-
-    getRepeatingPeriodForUser(period) {
-      return RepeatingPeriodForUser[period];
     },
 
     getStartedOn() {
       return `${new Date().getFullYear()}-${this.month.name}`;
     },
-  },
-  async mounted() {
-    const tags = await tagsService.getAvailableTags();
-    this.tags = tags;
   },
 };
 </script>

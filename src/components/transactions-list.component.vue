@@ -13,8 +13,6 @@
             </div>
 
             <div class="flex">
-              <p class="font-medium">Repeat period:&nbsp;</p>
-              <p class="text-indigo-500">{{ availableRepeatPeriods[transaction.repeatPeriod] }}&nbsp;</p>
               <div class="flex" v-if="commentExists(transaction.comment)">
                 <p class="font-medium">Comment:&nbsp;</p>
                 <p class="text-indigo-500">
