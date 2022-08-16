@@ -100,8 +100,8 @@ export default {
       required: true,
     },
     monthId: {
-      type: Number, 
-      required: true
+      type: Number,
+      required: true,
     },
     year: {
       type: Number,
@@ -142,6 +142,9 @@ export default {
     isPassedMonth() {
       return this.monthType === MonthType.Passed;
     },
+  },
+  emits: {
+    rerender: null,
   },
   methods: {
     deleteTempIncome(id) {
@@ -198,6 +201,7 @@ export default {
       this.incomes = [...this.tempIncomes, ...this.incomes];
       this.expenses = [...this.tempExpenses, ...this.expenses];
       this.flushTempStorages();
+      this.$emit("rerender");
     },
 
     flushTempStorages() {

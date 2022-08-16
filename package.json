@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "build-css": " npx tailwindcss -i ./src/input.css -o ./dist/output.css",
     "watch-css": " npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prettier": "npx prettier -w --config .prettierrc.json src/**/* src/**/**/* src/**/**/**/*"
+
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -25,6 +27,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
     "tailwindcss": "^3.1.8"
   },
   "eslintConfig": {

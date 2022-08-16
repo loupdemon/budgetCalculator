@@ -1,8 +1,5 @@
 <template>
-  <TotalSummary
-    :expenses="totalExpense"
-    :incomes="totalIncome"
-  ></TotalSummary>
+  <TotalSummary :expenses="totalExpense" :incomes="totalIncome"></TotalSummary>
   <div v-if="!loading" class="mt-8 grid grid-cols-4 gap-4 place-content-center">
     <div v-for="month in months" :key="month.id">
       <MonthCard
@@ -11,6 +8,7 @@
         :year="year"
         :month-type="getMonthType(month.id)"
         :monthsData="monthsData"
+        @rerender="calculateTotal"
       ></MonthCard>
     </div>
   </div>
@@ -40,33 +38,7 @@ export default {
     };
   },
   mounted() {
-    new TransactionService()
-      .getMonthData()
-      .then((response) => {
-        let totalIncomes = 0;
-        let totalExpenses = 0;
-        for (const el in response) {
-          this.monthsData.set(el, response[el]);
-
-          const incomesArray = response[el].incomes;
-          if (incomesArray.length) {
-            incomesArray.forEach((element) => {
-              totalIncomes += element.value;
-            });
-          }
-          const expensesArray = response[el].expenses;
-          if (expensesArray.length) {
-            expensesArray.forEach((element) => {
-              totalExpenses += element.value;
-            });
-          }
-        }
-        this.totalIncome = totalIncomes;
-        this.totalExpense = totalExpenses;
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+    this.calculateTotal();
   },
   methods: {
     getMonthType(id) {
@@ -80,6 +52,35 @@ export default {
       }
 
       return MonthType.Future;
+    },
+    calculateTotal() {
+      new TransactionService()
+        .getMonthData()
+        .then((response) => {
+          let totalIncomes = 0;
+          let totalExpenses = 0;
+          for (const el in response) {
+            this.monthsData.set(el, response[el]);
+
+            const incomesArray = response[el].incomes;
+            if (incomesArray.length) {
+              incomesArray.forEach((element) => {
+                totalIncomes += element.value;
+              });
+            }
+            const expensesArray = response[el].expenses;
+            if (expensesArray.length) {
+              expensesArray.forEach((element) => {
+                totalExpenses += element.value;
+              });
+            }
+          }
+          this.totalIncome = totalIncomes;
+          this.totalExpense = totalExpenses;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 };
