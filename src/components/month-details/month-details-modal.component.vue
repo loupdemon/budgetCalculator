@@ -2,7 +2,10 @@
   <div class="container mx-auto">
     <CustomLoading v-if="isLoading" />
     <div class="flex justify-center" @click="onCloseHandler">
-      <div v-show="isOpen" class="absolute inset-0 flex items-center justify-center bg-indigo-900 bg-opacity-50">
+      <div
+        v-show="isOpen"
+        class="absolute inset-0 flex items-center justify-center bg-indigo-900 bg-opacity-50"
+      >
         <div class="max-w-3xl p-6 bg-white rounded-md shadow-xl" @click.stop>
           <div class="flex items-center justify-between">
             <h3 class="text-2xl">
@@ -18,7 +21,10 @@
           <!--    START FOOTER WITH BUTTONS        -->
           <div class="mt-4">
             <slot name="footer">
-              <button @click="onCloseHandler" class="px-6 py-2 text-blue-800 border border-blue-600 rounded">
+              <button
+                @click="onCloseHandler"
+                class="px-6 py-2 text-blue-800 border border-blue-600 rounded"
+              >
                 Cancel
               </button>
 
@@ -26,13 +32,18 @@
                 v-if="isConfirmationModalOpen"
                 title="Confirm Your Action"
                 @close="isConfirmationModalOpen = false"
-                @confirmed="() => (isDangerousClose() ? closeDetailsModal() : updateTransactions())"
+                @confirmed="
+                  () =>
+                    isDangerousClose()
+                      ? closeDetailsModal()
+                      : updateTransactions()
+                "
               >
                 <template #body>
                   {{
                     isDangerousClose()
-                      ? 'You have unsaved transactions. Do you really want to discard them?'
-                      : 'Do you want save this changes ? This action cannot be undone and can take some time.'
+                      ? "You have unsaved transactions. Do you really want to discard them?"
+                      : "Do you want save this changes ? This action cannot be undone and can take some time."
                   }}
                 </template>
               </ConfirmationAlert>
@@ -46,7 +57,11 @@
                     : 'Something went wrong, sorry :('
                 "
               />
-              <button v-if="!isFrozen" class="px-6 py-2 ml-2 text-blue-100 rounded bg-blue-600" @click="isConfirmationModalOpen = true">
+              <button
+                v-if="!isFrozen"
+                class="px-6 py-2 ml-2 text-blue-100 rounded bg-blue-600"
+                @click="isConfirmationModalOpen = true"
+              >
                 Save
               </button>
             </slot>
@@ -58,15 +73,15 @@
 </template>
 
 <script>
-import { TransactionService } from '@/services/transactions.service';
-import ConfirmationAlert from '@/components/confirmation-alert.component';
-import InfoModal from '@/components/info-modal.component';
-import CustomLoading from '@/components/custom-loading.component';
-import CustomClose from '@/components/custom-close.component';
-import { isValidTransactionObject } from '@/utils';
+import { TransactionService } from "@/services/transactions.service";
+import ConfirmationAlert from "@/components/confirmation-alert.component";
+import InfoModal from "@/components/info-modal.component";
+import CustomLoading from "@/components/custom-loading.component";
+import CustomClose from "@/components/custom-close.component";
+import { isValidTransactionObject } from "@/utils";
 
 export default {
-  name: 'month-details-modal.component',
+  name: "month-details-modal.component",
   components: {
     ConfirmationAlert,
     InfoModal,
@@ -79,6 +94,10 @@ export default {
   },
   modalStateController: null,
   props: {
+    monthId: {
+      type: Number, 
+      required: true
+    },
     tempIncomes: {
       type: Array,
       required: true,
@@ -97,8 +116,8 @@ export default {
     },
     isFrozen: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -114,7 +133,19 @@ export default {
   methods: {
     updateTransactions() {
       this.isLoading = true;
-      TransactionService.update(this.incomes, this.tempIncomes, this.expenses, this.tempExpenses)
+      new TransactionService().updateMonthData(
+        this.monthId,
+        this.incomes,
+        this.tempIncomes,
+        this.expenses,
+        this.tempExpenses
+      );
+      TransactionService.update(
+        this.incomes,
+        this.tempIncomes,
+        this.expenses,
+        this.tempExpenses
+      )
         .then(() => {
           this.isTransactionSuccessful = true;
         })
@@ -153,11 +184,14 @@ export default {
     },
 
     isDangerousClose() {
-      return this.isCloseRequested && (this.tempExpenses.length > 0 || this.tempIncomes.length > 0);
+      return (
+        this.isCloseRequested &&
+        (this.tempExpenses.length > 0 || this.tempIncomes.length > 0)
+      );
     },
 
     handleKeydown(e) {
-      if (this.isOpen && e.key === 'Escape') {
+      if (this.isOpen && e.key === "Escape") {
         this.closeDetailsModal();
       }
     },
@@ -175,6 +209,7 @@ export default {
 
       return statePromise;
     },
+
     closeAll() {
       this.isOpen = false;
       this.isConfirmationModalOpen = false;
@@ -185,18 +220,19 @@ export default {
   },
 
   mounted() {
-    document.addEventListener('keydown', this.handleKeydown);
+    document.addEventListener("keydown", this.handleKeydown);
   },
+
   beforeUnmount() {
-    document.removeEventListener('keydown', this.handleKeydown);
+    document.removeEventListener("keydown", this.handleKeydown);
   },
 
   watch: {
     isOpen(value) {
       if (value) {
-        return document.querySelector('body').classList.add('overflow-hidden');
+        return document.querySelector("body").classList.add("overflow-hidden");
       }
-      document.querySelector('body').classList.remove('overflow-hidden');
+      document.querySelector("body").classList.remove("overflow-hidden");
     },
   },
 };

@@ -90,7 +90,6 @@ export default {
       value: null,
       currency: CurrencyValues.EUR,
       comment: "",
-      date: this.getStartedOn(),
     };
   },
 
@@ -107,16 +106,12 @@ export default {
       this.checkForm();
 
       if (this.errors.length === 0) {
-        const { value, currency, comment, repeatPeriod, tag, date } = this;
-        const id = Date.now();
+        const { value, comment} = this;
+        const id = Date.now().toString();
         this.$emit("add", {
-          id,
           value,
-          currency,
           comment,
-          repeatPeriod,
-          tag,
-          date,
+          id
         });
       }
     },

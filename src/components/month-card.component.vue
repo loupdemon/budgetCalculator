@@ -28,6 +28,7 @@
     <div>
       <MonthDetailsModal
         ref="detailsModal"
+        :monthId="monthId"
         :expenses="expenses"
         :incomes="incomes"
         :temp-expenses="tempExpenses"
@@ -97,6 +98,10 @@ export default {
     month: {
       type: Object,
       required: true,
+    },
+    monthId: {
+      type: Number, 
+      required: true
     },
     year: {
       type: Number,

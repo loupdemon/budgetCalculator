@@ -1,9 +1,9 @@
 <template>
   <div v-if="!loading" class="mt-8 grid lg:grid-cols-4 sm:grid-cols-2">
     <div v-for="month in months" :key="month.id">
-      <!-- <MonthCard :month="month" :year="year" :month-type="getMonthType(month.id)" :incomes="getMonthIncomes(month.name)" :expenses="getMonthExpenses(month.name)"></MonthCard> -->
       <MonthCard
         :month="month"
+        :monthId = "month.id"
         :year="year"
         :month-type="getMonthType(month.id)"
         :monthsData="monthsData"
