@@ -24,15 +24,13 @@
         &nbsp;
         <p class="font-medium text-xl">EUR</p>
       </div>
-      <p class="text-xl">{{ getMessage }}</p>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'total-section.component',
+  name: "total-section.component",
   props: {
     incomes: {
       type: Array,
@@ -47,7 +45,7 @@ export default {
   methods: {
     calculateSummary(arr) {
       let summary = 0;
-      arr.forEach(el => {
+      arr.forEach((el) => {
         summary += el.value;
       });
       return summary.toFixed(2);
@@ -59,42 +57,20 @@ export default {
     },
     getStyles() {
       if (this.calculateTotal > 0) {
-        // return 'bg-green-400';
-        return '';
+        return "decoration-green-100";
       }
 
-      if (this.calculateTotal < 0) {
-        // return 'bg-red-400';
-        return '';
+      if (this.calculateTotal <= 0) {
+        return "decoration-red-100";
       }
-
-      // return 'bg-gray-400';
-      return '';
-    },
-
-    getMessage() {
-      return '';
-      // if (this.calculateTotal > 0) {
-      //   return 'IN PROFIT :)';
-      // }
-      //
-      // if (this.calculateTotal < 0) {
-      //   return 'IN DEBT :(';
-      // }
-      //
-      // if (Number(isNaN(this.calculateTotal))) {
-      //   return 'SOMETHING WENT WRONG!';
-      // }
-      //
-      // return 'JUST IN BUDGET :(';
+      return "";
     },
 
     getSign() {
       if (this.calculateTotal > 0) {
-        return '+';
+        return "+";
       }
-
-      return '';
+      return "";
     },
   },
 

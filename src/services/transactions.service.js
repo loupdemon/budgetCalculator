@@ -11,9 +11,8 @@ export class TransactionService {
     return new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  async selectAll() {
+  async getMonthData() {
     const response = await axios.get("http://localhost:3000/month-data");
-    console.dir(response);
     return response.data;
   }
 

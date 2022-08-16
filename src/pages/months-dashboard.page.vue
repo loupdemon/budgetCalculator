@@ -1,9 +1,13 @@
 <template>
-  <div v-if="!loading" class="mt-8 grid lg:grid-cols-4 sm:grid-cols-2">
+  <TotalSummary
+    :expenses="totalExpense"
+    :incomes="totalIncome"
+  ></TotalSummary>
+  <div v-if="!loading" class="mt-8 grid grid-cols-4 gap-4 place-content-center">
     <div v-for="month in months" :key="month.id">
       <MonthCard
         :month="month"
-        :monthId = "month.id"
+        :monthId="month.id"
         :year="year"
         :month-type="getMonthType(month.id)"
         :monthsData="monthsData"
@@ -13,6 +17,7 @@
 </template>
 
 <script>
+import TotalSummary from "../components/total-summary.component.vue";
 import MonthCard from "../components/month-card.component";
 import { TransactionService } from "@/services/transactions.service";
 import { months } from "../constants";
@@ -21,6 +26,7 @@ import { MonthType } from "@/enums";
 export default {
   name: "base-component",
   components: {
+    TotalSummary,
     MonthCard,
   },
   data() {
@@ -29,15 +35,34 @@ export default {
       months: months,
       year: new Date().getFullYear(),
       monthsData: new Map(),
+      totalIncome: 0,
+      totalExpense: 0,
     };
   },
   mounted() {
     new TransactionService()
-      .selectAll()
+      .getMonthData()
       .then((response) => {
+        let totalIncomes = 0;
+        let totalExpenses = 0;
         for (const el in response) {
           this.monthsData.set(el, response[el]);
+
+          const incomesArray = response[el].incomes;
+          if (incomesArray.length) {
+            incomesArray.forEach((element) => {
+              totalIncomes += element.value;
+            });
+          }
+          const expensesArray = response[el].expenses;
+          if (expensesArray.length) {
+            expensesArray.forEach((element) => {
+              totalExpenses += element.value;
+            });
+          }
         }
+        this.totalIncome = totalIncomes;
+        this.totalExpense = totalExpenses;
       })
       .finally(() => {
         this.loading = false;
@@ -55,9 +80,6 @@ export default {
       }
 
       return MonthType.Future;
-    },
-    getMonthData(monthName) {
-      return this.monthsData.get(monthName);
     },
   },
 };

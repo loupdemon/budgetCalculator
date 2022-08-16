@@ -7,7 +7,7 @@
       <h2 class="text-gray-800 text-3xl font-semibold">
         <b>{{ month.name }}</b>
       </h2>
-      <div class="mt-2 text-black-700">
+      <div class="text-black-700">
         <TransactionSummaries
           :expenses="[...expenses, ...deletedExpenses]"
           :incomes="[...incomes, ...deletedIncomes]"
@@ -18,7 +18,7 @@
       <div class="flex justify-end mt-4">
         <button
           @click="showDialog"
-          class="text-xl font-medium px-6 py-2 text-white bg-blue-500 rounded shadow"
+          class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
           type="button"
         >
           Show details

@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <CustomLoading v-if="isLoading" />
-    <div class="flex justify-center" @click="onCloseHandler">
+    <div class="modal fade top-0 left-0 w-full h-full outline-none overflow-x-hidden overflow-y-auto" @click="onCloseHandler">
       <div
         v-show="isOpen"
         class="absolute inset-0 flex items-center justify-center bg-indigo-900 bg-opacity-50"
