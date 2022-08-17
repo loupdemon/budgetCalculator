@@ -42,7 +42,7 @@
 <script>
 import { RepeatingPeriodForUser } from "@/enums";
 import { inputExists } from "@/utils";
-import CustomClose from "@/components/custom-close.component";
+import CustomClose from "@/components/info-details/custom-close.component";
 
 export default {
   name: "transactions-list.component",

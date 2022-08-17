@@ -16,7 +16,7 @@
       <p class="font-medium text-lg">EUR</p>
     </div>
 
-    <div class="p-2" :class="getStyles">
+    <div class="p-2 border-4" :class="getStyles">
       <div class="flex mb-1">
         <p class="font-medium text-xl">TOTAL:</p>
         &nbsp;
@@ -56,21 +56,11 @@ export default {
       return (this.totalIncomes - this.totalExpenses).toFixed(2);
     },
     getStyles() {
-      if (this.calculateTotal > 0) {
-        return "decoration-green-100";
-      }
-
-      if (this.calculateTotal <= 0) {
-        return "decoration-red-100";
-      }
-      return "";
+      return this.calculateTotal > 0 ? "border-lime-400/75" : "border-red-400/75";
     },
 
     getSign() {
-      if (this.calculateTotal > 0) {
-        return "+";
-      }
-      return "";
+      return this.calculateTotal > 0 ? "+" : "";
     },
   },
 

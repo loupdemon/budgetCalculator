@@ -18,10 +18,12 @@
       <div class="flex justify-end mt-4">
         <button
           @click="showDialog"
-          class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+          class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight 
+          rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg 
+          focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
           type="button"
         >
-          Show details
+          SHOW DETAILS
         </button>
       </div>
     </div>
@@ -112,7 +114,7 @@ export default {
       default: MonthType.Future,
     },
     monthsData: {
-      type: Object,
+      type: Map,
       default: MonthType.Future,
     },
   },
@@ -127,18 +129,18 @@ export default {
     };
   },
   computed: {
+    /**
+     * Function that returns class in relation to monthType
+     */
     monthStyle() {
       if (this.monthType === MonthType.Passed) {
-        return "bg-zinc-300";
-      }
-
-      if (this.monthType === MonthType.Current) {
+        return "bg-zinc-200";
+      } else if (this.monthType === MonthType.Current) {
         return "bg-blue-100";
-      }
-
-      return "";
+      } else {
+        return "bg-white";
+      } 
     },
-
     isPassedMonth() {
       return this.monthType === MonthType.Passed;
     },
@@ -147,12 +149,24 @@ export default {
     rerender: null,
   },
   methods: {
+    /**
+     * Function that deletes component of temporary added income in the modal
+     * @param {String} id - unique id of income
+     */
     deleteTempIncome(id) {
       this.tempIncomes = this.tempIncomes.filter((el) => el.id !== id);
     },
+    /**
+     * Function that deletes component of temporary added expense in the modal
+     * @param {String} id - unique id of expense
+     */
     deleteTempExpense(id) {
       this.tempExpenses = this.tempExpenses.filter((el) => el.id !== id);
     },
+    /**
+     * Function that changes added and saved expense to deleted one in the modal
+     * @param {String} id - unique id of expense
+     */
     deleteExpense(id) {
       const expense = this.expenses.find((el) => el.id === id);
       if (expense) {
@@ -160,6 +174,10 @@ export default {
       }
       this.expenses = this.expenses.filter((el) => el.id !== id);
     },
+    /**
+     * Function that changes added and saved income to deleted one in the modal
+     * @param {String} id - unique id of income
+     */
     deleteIncome(id) {
       const income = this.incomes.find((el) => el.id === id);
       if (income) {
@@ -167,7 +185,10 @@ export default {
       }
       this.incomes = this.incomes.filter((el) => el.id !== id);
     },
-
+    /**
+     * Function that changes deleted income back to added and saved one in the modal
+     * @param {String} id - unique id of income
+     */
     revertIncomeDelete(id) {
       const income = this.deletedIncomes.find((el) => el.id === id);
       if (income) {
@@ -175,7 +196,10 @@ export default {
       }
       this.deletedIncomes = this.deletedIncomes.filter((el) => el.id !== id);
     },
-
+        /**
+     * Function that changes deleted expense back to added and saved one in the modal
+     * @param {String} id - unique id of expense
+     */
     revertExpenseDelete(id) {
       const expense = this.deletedExpenses.find((el) => el.id === id);
       if (expense) {
@@ -183,47 +207,54 @@ export default {
       }
       this.deletedExpenses = this.deletedExpenses.filter((el) => el.id !== id);
     },
-
+    /**
+     * Function that shows the dialog window when user finishes his updating and click on close button
+     * and calls for updating all the information in the dashboard and clear temporary storages
+     */
     async showDialog() {
       const result = await this.$refs.detailsModal.manageState();
-
       if (result) {
         this.proceedSuccessfulTransaction();
         return;
       }
-
       this.incomes.push(...this.deletedIncomes);
       this.expenses.push(...this.deletedExpenses);
       this.flushTempStorages();
     },
-
+    /**
+     * Function that calls for updating all the information in the dashboard
+     */
     proceedSuccessfulTransaction() {
       this.incomes = [...this.tempIncomes, ...this.incomes];
       this.expenses = [...this.tempExpenses, ...this.expenses];
       this.flushTempStorages();
       this.$emit("rerender");
     },
-
+    /**
+     * Function that calls for clearing temporary storages
+     */
     flushTempStorages() {
       this.tempIncomes = [];
       this.tempExpenses = [];
       this.deletedIncomes = [];
       this.deletedExpenses = [];
     },
-
+    /**
+     * Function that gets information of incomes for called month
+     */
     getMonthIncomes() {
       return this.monthsData.get(this.month.name).incomes;
     },
+        /**
+     * Function that gets information of expenses for called month
+     */
     getMonthExpenses() {
       return this.monthsData.get(this.month.name).expenses;
     },
   },
-
   mounted() {
     this.incomes.push(...this.getMonthIncomes());
     this.expenses.push(...this.getMonthExpenses());
   },
 };
 </script>
-
-<style scoped></style>

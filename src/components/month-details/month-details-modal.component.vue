@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <CustomLoading v-if="isLoading" />
+    <CustomLoading v-if="isLoading"/>
     <div class="modal fade top-0 left-0 w-full h-full outline-none overflow-x-hidden overflow-y-auto" @click="onCloseHandler">
       <div
         v-show="isOpen"
@@ -9,14 +9,11 @@
         <div class="max-w-3xl p-6 bg-white rounded-md shadow-xl" @click.stop>
           <div class="flex items-center justify-between">
             <h3 class="text-2xl">
-              <slot name="header"> Model Title</slot>
+              <slot name="header">Model Title</slot>
             </h3>
-
             <CustomClose @click="onCloseHandler" />
           </div>
-
           <slot name="body"></slot>
-
           <p class="mb-4 text-sm"></p>
           <!--    START FOOTER WITH BUTTONS        -->
           <div class="mt-4">
@@ -27,7 +24,6 @@
               >
                 Cancel
               </button>
-
               <ConfirmationAlert
                 v-if="isConfirmationModalOpen"
                 title="Confirm Your Action"
@@ -50,7 +46,7 @@
               <InfoModal
                 v-if="isTransactionCompleted"
                 @done="proceedTransaction"
-                :color="isTransactionSuccessful ? 'bg-green-400' : 'bg-red-600'"
+                :color="isTransactionSuccessful ? 'bg-green-200' : 'bg-red-200'"
                 :title="
                   isTransactionSuccessful
                     ? 'Everything is ok, transaction successful!'
@@ -74,10 +70,10 @@
 
 <script>
 import { TransactionService } from "@/services/transactions.service";
-import ConfirmationAlert from "@/components/confirmation-alert.component";
-import InfoModal from "@/components/info-modal.component";
-import CustomLoading from "@/components/custom-loading.component";
-import CustomClose from "@/components/custom-close.component";
+import ConfirmationAlert from "@/components/info-details/confirmation-alert.component";
+import InfoModal from "@/components/info-details/info-modal.component";
+import CustomLoading from "@/components/info-details/custom-loading.component";
+import CustomClose from "@/components/info-details/custom-close.component";
 import { isValidTransactionObject } from "@/utils";
 
 export default {
@@ -129,8 +125,10 @@ export default {
       isCloseRequested: false,
     };
   },
-
   methods: {
+    /**
+     * Function that calls services to update information in dashboard and database
+     */
     updateTransactions() {
       this.isLoading = true;
       new TransactionService().updateMonthData(
@@ -145,8 +143,7 @@ export default {
         this.tempIncomes,
         this.expenses,
         this.tempExpenses
-      )
-        .then(() => {
+      ).then(() => {
           this.isTransactionSuccessful = true;
         })
         .finally(() => {
@@ -154,22 +151,24 @@ export default {
           this.isTransactionCompleted = true;
         });
     },
-
+    /**
+     * Function that checks state of updating operations in modal and closes action
+     */
     proceedTransaction() {
       if (!this.isTransactionCompleted) {
         return;
       }
-
       if (this.isTransactionSuccessful) {
         this.closeAll();
         this.$options.modalStateController.resolve(true);
         return;
       }
-
       this.closeAll();
       this.$options.modalStateController.resolve(false);
     },
-
+    /**
+     * Function that checks state of operation and calls for confirmation of done operations
+     */
     onCloseHandler() {
       this.isCloseRequested = true;
       if (this.isDangerousClose()) {
@@ -178,24 +177,22 @@ export default {
       }
       this.closeDetailsModal();
     },
+    /**
+     * Function that closes all modals
+     */
     closeDetailsModal() {
       this.closeAll();
       this.$options.modalStateController.resolve(false);
     },
-
+    /**
+     * Function that checks if closing of modal was initiated by user or was done by mistake
+     */
     isDangerousClose() {
       return (
         this.isCloseRequested &&
         (this.tempExpenses.length > 0 || this.tempIncomes.length > 0)
       );
     },
-
-    handleKeydown(e) {
-      if (this.isOpen && e.key === "Escape") {
-        this.closeDetailsModal();
-      }
-    },
-
     async manageState() {
       this.isOpen = !this.isOpen;
       let resolve;
@@ -209,7 +206,6 @@ export default {
 
       return statePromise;
     },
-
     closeAll() {
       this.isOpen = false;
       this.isConfirmationModalOpen = false;
@@ -218,15 +214,6 @@ export default {
       this.isCloseRequested = false;
     },
   },
-
-  mounted() {
-    document.addEventListener("keydown", this.handleKeydown);
-  },
-
-  beforeUnmount() {
-    document.removeEventListener("keydown", this.handleKeydown);
-  },
-
   watch: {
     isOpen(value) {
       if (value) {
@@ -237,4 +224,3 @@ export default {
   },
 };
 </script>
-<style scoped></style>

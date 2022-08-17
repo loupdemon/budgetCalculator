@@ -8,7 +8,7 @@
         :year="year"
         :month-type="getMonthType(month.id)"
         :monthsData="monthsData"
-        @rerender="calculateTotal"
+        @rerender="calculateBudget"
       ></MonthCard>
     </div>
   </div>
@@ -38,22 +38,29 @@ export default {
     };
   },
   mounted() {
-    this.calculateTotal();
+    this.calculateBudget();
   },
   methods: {
-    getMonthType(id) {
+    /**
+     * Function for defining type of month in relation to year, if it passed or not
+     * returns type of month {String}
+     * @param {Number} monthId - Month id from the Map object
+     */
+    getMonthType(monthId) {
       const currentMonthId = new Date().getMonth() + 1;
-      if (id < currentMonthId) {
+      if (monthId < currentMonthId) {
         return MonthType.Passed;
       }
-
-      if (id === currentMonthId) {
+      if (monthId === currentMonthId) {
         return MonthType.Current;
       }
-
       return MonthType.Future;
     },
-    calculateTotal() {
+    /**
+     * Function for calculating total income and expense for whole year and set this data for each month
+     * returns nothing
+     */
+    calculateBudget() {
       new TransactionService()
         .getMonthData()
         .then((response) => {
@@ -85,5 +92,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

@@ -1,23 +1,21 @@
 <template>
   <div class="ml-5 grid gap-3 grid-cols-3 grid-rows-1">
     <div class="flex">
-      <p class="text-lg">Incomes:</p>
+      <p class="text-xl font-medium">INCOMES:</p>
       &nbsp;
-      <p class="text-lg font-black">{{ incomes }}</p>
+      <p class="text-xl font-black">{{ incomes }}</p>
       &nbsp;
-      <p class="text-lg">EUR</p>
+      <p class="text-xl">EUR</p>
     </div>
-
     <div class="flex">
-      <p class="text-lg">Expenses:</p>
+      <p class="text-xl font-medium">EXPENSES:</p>
       &nbsp;
-      <p class="font-black text-lg">{{ expenses }}</p>
+      <p class="font-black text-xl">{{ expenses }}</p>
       &nbsp;
-      <p class="font-medium text-lg">EUR</p>
+      <p class="font-medium text-xl">EUR</p>
     </div>
-
-    <div class="">
-      <div class="flex">
+    <div>
+      <div class="flex border-4" :class="getStyles">
         <p class="font-medium text-xl">TOTAL:</p>
         &nbsp;
         <p class="text-xl font-black">{{ getSign }}{{ calculateTotal }}</p>
@@ -30,17 +28,24 @@
 
 <script>
 export default {
-  data() {},
   computed: {
+    /**
+     * Function that calculate TOTAL element and returns value for it {Number}
+     */
     calculateTotal() {
       return (this.incomes - this.expenses).toFixed(2);
     },
-
+    /**
+     * Function that returns classes for positive or negative balance
+     */
+    getStyles() {
+      return this.calculateTotal > 0 ? "border-lime-400/75" : "border-red-400/75";
+    },
+    /**
+     * Function that add a sign '+' for positive balance
+     */
     getSign() {
-      if (this.calculateTotal > 0) {
-        return "+";
-      }
-      return "";
+      return this.calculateTotal > 0 ? "+" : "";
     },
   },
   props: {
