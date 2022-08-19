@@ -23,5 +23,3 @@ export default {
   name: 'no-found.component',
 };
 </script>
-
-<style scoped></style>

@@ -16,7 +16,6 @@
 
 <script>
 import TransactionsList from '@/components/transactions-list.component';
-// import { MonthType } from "@/enums";
 export default {
   name: 'month-details-transaction-lists.component',
   components: {
@@ -44,24 +43,33 @@ export default {
       default: false,
     },
   },
-
   emits: {
     deleteTransaction: id => !Number.isNaN(Number(id)),
     deleteTempTransaction: id => !Number.isNaN(Number(id)),
     revertTransactionDelete: id => !Number.isNaN(Number(id)),
   },
   methods: {
+    /**
+     * Function that calls deleteTransaction from month cart component
+     * @param {String} id unique id of transaction
+     */
     deleteTransaction(id) {
       this.$emit('deleteTransaction', id);
     },
+    /**
+     * Function that calls deleteTempTransaction from month cart component
+     * @param {String} id unique id of transaction
+     */
     deleteTempTransaction(id) {
       this.$emit('deleteTempTransaction', id);
     },
+    /**
+     * Function that calls revertTransactionDelete from month cart component
+     * @param {String} id unique id of transaction
+     */
     revertTransactionDelete(id) {
       this.$emit('revertTransactionDelete', id);
     },
   },
 };
 </script>
-
-<style scoped></style>

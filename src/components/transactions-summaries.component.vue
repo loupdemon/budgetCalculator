@@ -7,7 +7,6 @@
       &nbsp;
       <p class="text-lg">EUR</p>
     </div>
-
     <div class="flex mb-1 p-1">
       <p class="text-lg">Expenses:</p>
       &nbsp;
@@ -15,7 +14,6 @@
       &nbsp;
       <p class="font-medium text-lg">EUR</p>
     </div>
-
     <div class="p-2 border-4" :class="getStyles">
       <div class="flex mb-1">
         <p class="font-medium text-xl">TOTAL:</p>
@@ -41,7 +39,6 @@ export default {
       required: true,
     },
   },
-
   methods: {
     calculateSummary(arr) {
       let summary = 0;
@@ -52,18 +49,26 @@ export default {
     },
   },
   computed: {
+    /**
+     * Function that calculates difference between incomes and expenses
+     * returns number
+     */
     calculateTotal() {
       return (this.totalIncomes - this.totalExpenses).toFixed(2);
     },
+    /**
+     * Function that returns class for positive/negative balance
+     */
     getStyles() {
       return this.calculateTotal > 0 ? "border-lime-400/75" : "border-red-400/75";
     },
-
+    /**
+     * Function that returns class for + sign if balance is positive
+     */
     getSign() {
       return this.calculateTotal > 0 ? "+" : "";
     },
   },
-
   data() {
     return {
       eurRate: null,
@@ -71,7 +76,6 @@ export default {
       totalExpenses: this.calculateSummary(this.expenses),
     };
   },
-
   watch: {
     incomes() {
       this.totalIncomes = this.calculateSummary(this.incomes);
@@ -86,5 +90,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

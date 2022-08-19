@@ -52,6 +52,9 @@ export default {
     },
   },
   methods: {
+    /**
+     * Function that calls action of window to close it
+     */
     done() {
       this.open = false;
       this.$emit('done');

@@ -11,7 +11,7 @@
             <h3 class="text-2xl">
               <slot name="header">Model Title</slot>
             </h3>
-            <CustomClose @click="onCloseHandler" />
+            <CustomClose @click="onCloseHandler"/>
           </div>
           <slot name="body"></slot>
           <p class="mb-4 text-sm"></p>
@@ -138,12 +138,7 @@ export default {
         this.expenses,
         this.tempExpenses
       );
-      TransactionService.update(
-        this.incomes,
-        this.tempIncomes,
-        this.expenses,
-        this.tempExpenses
-      ).then(() => {
+      TransactionService.waitForTimeout().then(() => {
           this.isTransactionSuccessful = true;
         })
         .finally(() => {
@@ -193,6 +188,9 @@ export default {
         (this.tempExpenses.length > 0 || this.tempIncomes.length > 0)
       );
     },
+    /**
+     * Function that returns promise with current state of the window
+     */
     async manageState() {
       this.isOpen = !this.isOpen;
       let resolve;
@@ -201,11 +199,12 @@ export default {
         resolve = res;
         reject = rej;
       });
-
       this.$options.modalStateController = { resolve, reject };
-
       return statePromise;
     },
+    /**
+     * Function that clear all settings in the window
+     */
     closeAll() {
       this.isOpen = false;
       this.isConfirmationModalOpen = false;

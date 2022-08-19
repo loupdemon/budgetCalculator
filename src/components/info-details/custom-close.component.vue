@@ -20,5 +20,3 @@ export default {
   name: 'custom-close.component',
 };
 </script>
-
-<style scoped></style>

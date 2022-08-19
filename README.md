@@ -1,24 +1,15 @@
 # budget-calculator
+### 1. First you need to install node and npm 
+`npm install -g npm`
+### Check versions on npm and node
+`node -v`
+`npm -v`
 
-## Project setup
-```
-npm install
-```
+### 2. Clone project of budgetCalculatorBackEnd and follow instructions there
+https://github.com/AnastasiaFl/budgetCalculatorBackEnd
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 3. After it you can install the project with command
+`npm install`
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 4. and run it
+`npm run serve`

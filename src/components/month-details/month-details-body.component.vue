@@ -7,7 +7,6 @@
           <div class="border-t border-gray-200" />
         </div>
       </div>
-
       <!--              START INCOMES SECTION-->
       <div class="mt-10 sm:mt-0">
         <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -17,7 +16,6 @@
               <p class="mt-1 text-sm text-gray-600">Salary, bonuses, one-time incomes etc</p>
             </div>
           </div>
-
           <div class="mt-5 md:mt-0 md:col-span-2">
             <slot name="incomes">NO ANY INCOMES!</slot>
             <MoneyTransferForm
@@ -27,7 +25,6 @@
               @cancel="cancelIncomeTransaction"
               >Adding income
             </MoneyTransferForm>
-
             <div v-if="!isIncomeFormOpen" class="h-15 grid grid-cols-5 gap-12 content-center">
               <button
                 v-if="!isFrozen"
@@ -41,7 +38,6 @@
         </div>
       </div>
       <!--              START INCOMES SECTION-->
-
       <div class="hidden sm:block" aria-hidden="true">
         <div class="py-5">
           <div class="border-t border-gray-200" />
@@ -79,13 +75,11 @@
         </div>
       </div>
       <!--              END EXPENSES SECTION-->
-
       <div class="hidden sm:block" aria-hidden="true">
         <div class="py-5">
           <div class="border-t border-gray-200" />
         </div>
       </div>
-
       <!--              START SUMMARIES SECTION-->
       <div class="mt-10 sm:mt-0">
         <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -158,23 +152,34 @@ export default {
   },
 
   methods: {
+    /**
+     * Function that calls addIncome from month card component
+     * @param {Object[]} obj income object
+     */
     handleAddIncome(obj) {
       this.isIncomeFormOpen = false;
       this.$emit('addIncome', obj);
     },
-
+    /**
+     * Function that calls addExpense from month card component
+     * @param {Object[]} obj income expense
+     */
     handleAddExpense(obj) {
       this.isExpensesFormOpen = false;
       this.$emit('addExpense', obj);
     },
+    /**
+     * Function that closes expenses adding form
+     */
     cancelExpenseTransaction() {
       this.isExpensesFormOpen = false;
     },
-
+    /**
+     * Function that closes incomes adding form
+     */
     cancelIncomeTransaction() {
       this.isIncomeFormOpen = false;
     },
   },
 };
 </script>
-<style scoped></style>

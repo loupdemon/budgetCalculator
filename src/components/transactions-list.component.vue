@@ -40,17 +40,11 @@
 </template>
 
 <script>
-import { RepeatingPeriodForUser } from "@/enums";
 import { inputExists } from "@/utils";
 import CustomClose from "@/components/info-details/custom-close.component";
 
 export default {
   name: "transactions-list.component",
-  data() {
-    return {
-      availableRepeatPeriods: RepeatingPeriodForUser,
-    };
-  },
   components: {
     CustomClose,
   },
@@ -68,9 +62,17 @@ export default {
     },
   },
   methods: {
+    /**
+     * Function that checks if comment is empty
+     * @param {String} value 
+     */
     commentExists(value) {
       return inputExists(value);
     },
+    /**
+     * Function that calls deleteTransaction from month card component
+     * @param {String} id unique month id
+     */
     emitDelete(id) {
       this.$emit("deleteTransaction", id);
     },

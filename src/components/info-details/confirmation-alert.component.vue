@@ -10,19 +10,16 @@
           <h3>{{ title }}</h3>
           <div @click="close" class="text-2xl hover:text-gray-600 cursor-pointer">&#215;</div>
         </div>
-
         <div class="max-h-full px-4 py-4">
           <p class="text-gray-800">
             <slot name="body"></slot>
           </p>
-
           <div class="text-right mt-4">
             <slot name="closeButton">
               <button @click="close" class="px-4 py-2 text-sm text-gray-600 focus:outline-none hover:underline">
                 Cancel
               </button>
             </slot>
-
             <slot name="confirmButton">
               <button
                 class="mr-2 px-4 py-2 text-sm rounded text-white bg-blue-600 focus:outline-none hover:bg-blue-400"
@@ -57,11 +54,16 @@ export default {
     },
   },
   methods: {
+    /**
+     * Function that calls close from modal window of month card
+     */
     close() {
       this.open = false;
       this.$emit('close');
     },
-
+    /**
+     * Function that calls confirmed function from modal window of month card
+     */
     confirm() {
       this.isLoading = true;
       this.$emit('confirmed');

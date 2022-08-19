@@ -23,5 +23,3 @@ export default {
   name: 'custom-loading.component',
 };
 </script>
-
-<style scoped></style>

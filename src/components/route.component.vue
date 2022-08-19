@@ -22,11 +22,17 @@ export default {
     };
   },
   computed: {
+    /**
+    * Function that returns routes
+    */
     currentView() {
       return routes[this.currentPath.slice(1) || '/'] || NotFound;
     },
   },
   methods: {
+    /**
+     * Function that set current path in window hash
+     */
     setCurrentPath() {
       this.currentPath = window.location.hash;
     },
